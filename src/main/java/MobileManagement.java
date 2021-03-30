@@ -13,8 +13,13 @@ public class MobileManagement implements MobileRepository {
 
     @Override
     public Mobile insert(Mobile m) {
-        mobiles.add(m);
-        return mobiles.get(mobiles.indexOf(m));
+        if(mobiles.stream().filter(c->c.getId().equals(m.getId())).count()>0){
+            throw new RuntimeException("Mobile is exist in db");
+        }else{
+            mobiles.add(m);
+            return mobiles.get(mobiles.indexOf(m));
+        }
+
     }
 
     @Override
