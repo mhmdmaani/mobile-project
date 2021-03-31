@@ -19,9 +19,14 @@ pipeline{
                  }
         }
         stage('deploy'){
+
             steps{
-                sh 'docker build --tag latest .'
-                sh 'docker push mhmdmaani/mobile'
+                withDockerContainer(image: 'docker', args: '-v /var/run/docker.sock:/var/run/docker.sock') {
+                    sh('docker --version')
+                    sh ('docker build --tag latest .')
+                    sh ('docker push mhmdmaani/mobile')
+                }
+
             }
         }
 }
