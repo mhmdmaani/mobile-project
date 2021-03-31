@@ -1,10 +1,5 @@
-FROM  maven:3.6.3-openjdk-16
+FROM adoptopenjdk:16-jre
 WORKDIR /
-COPY ./pom.xml ./pom.xml
-COPY ./src ./src
-RUN mvn test
-RUN mvn package
-
-COPY --from= ./target/mobile-project-*.jar ./mobile-project.jar
+ADD ./target/mobile-project-1.0-SNAPSHOT.jar mobile-project-1.0-SNAPSHOT.jar
 EXPOSE 8081
-CMD ["java", "-jar", "./mobile-project.jar"]
+CMD java -jar /mobile-project-1.0-SNAPSHOT.jar
