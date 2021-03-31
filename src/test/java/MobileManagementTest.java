@@ -2,10 +2,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MobileManagementTest {
 
@@ -43,9 +42,12 @@ class MobileManagementTest {
     @Test
     @DisplayName("check fetch all  function when the mobiles array")
     void testFindAllWhenArrayContinsMobiles () {
-    MobileManagement mobileManager = new MobileManagement(new ArrayList<Mobile>(List.of(new Mobile("1","Iphone",7,2017,64,6000)
-    ,new Mobile("2","Iphone",8,2018,64,8000)
-    ,new Mobile("3","Iphone",11,2019,64,9000))));
+        ArrayList<Mobile> mobiles = new ArrayList<Mobile>() ;
+
+        mobiles.add(new Mobile("1","Iphone 5",2010 ,2010,256,2000));
+        mobiles.add(new Mobile("2","Iphone 6",2011 ,2010,256,3000));
+        mobiles.add(new Mobile("3","Iphone 7",2012 ,2010,256,4200));
+    MobileManagement mobileManager = new MobileManagement(mobiles);
 
     assertThat(mobileManager.fetchAll().size()).isEqualTo(3);
 
