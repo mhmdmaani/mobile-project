@@ -18,11 +18,6 @@ pipeline{
                 sh 'mvn test'
                  }
         }
-        stage('deploy'){
-            steps{
-                sh 'docker build --tag latest .'
-                sh 'docker push mhmdmaani/mobile'
-            }
-        }
+       
 }
 }
