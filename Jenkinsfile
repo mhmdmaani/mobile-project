@@ -1,5 +1,5 @@
 pipeline{
-    agent { dockerfile true }
+    agent any
     tools{
         maven 'Maven'
     }
@@ -18,16 +18,9 @@ pipeline{
                 sh 'mvn test'
                  }
         }
-        stage('deploy'){
-
-            steps{
-                withDockerContainer(image: 'docker', args: '-v /var/run/docker.sock:/var/run/docker.sock') {
-                    sh('docker --version')
-                    sh ('docker build --tag latest .')
-                    sh ('docker push mhmdmaani/mobile')
-                }
-
-            }
+        stage('build docker image'){
+            sh 'docker build -t latest .'
+            sh 'docker push mhmdmaani/mobile:latest'
         }
 }
 }
