@@ -27,10 +27,9 @@ pipeline {
             }
         }
         stage('Dockerbuild') {
-            steps {
-                script {
-                    dockerImage = docker.build("osamahkh/mobilestore")
-                }
+            stage('build docker image') {
+                sh 'docker build -t latest .'
+                sh 'docker push mhmdmaani/mobile:latest'
             }
         }
         stage('Deploy our image') {
