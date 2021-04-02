@@ -1,7 +1,7 @@
 pipeline {
     environment {
         registry = "osamahkh/mobilestore"
-        registryCredential = 'MobileStore'
+        registryCredential = '0fb75e80-e0e7-4420-815a-38254637040a'
         dockerImage = ''
     }
     agent any
