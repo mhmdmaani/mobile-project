@@ -29,14 +29,14 @@ pipeline {
         stage('Dockerbuild') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build("osamahkh/mobilestore")
                 }
             }
         }
         stage('Deploy our image') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
+                     docker.withRegistry('https://registry-1.docker.io/v2/', registryCredential) {
                         dockerImage.push()
                     }
                 }
