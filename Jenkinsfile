@@ -1,7 +1,7 @@
 pipeline {
     environment {
         registry = "osamahkh/mobilestore"
-        registryCredential = 'eaca6f1b-0224-4681-b90f-af20de6d7343'
+        registryCredential = 'MobileStore'
         dockerImage = ''
     }
     agent any
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Starting to build Greeter'
+             
                 sh 'java --version'
                 sh 'mvn clean compile'
             }
@@ -30,18 +30,26 @@ pipeline {
         stage('Dockerbuild') {
             steps {
                 script {
-                    dockerImage = docker.build("osamahkh/mobilestore1")
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
         stage('Deploy our image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry-1.docker.io/v2/', registryCredential) {
+                    docker.withRegistry('', registryCredential) {
                         dockerImage.push()
                     }
                 }
             }
         }
+         stage('Cleaning up') { 
+
+            steps { 
+
+                sh "docker rmi $registry:$BUILD_NUMBER" 
+
+            }
+        } 
     }
 }
