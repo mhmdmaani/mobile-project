@@ -27,7 +27,7 @@ pipeline {
             }
         }
         stage('Dockerbuild') {
-            stage('build docker image') {
+            steps('build docker image') {
                 sh 'docker build -t latest .'
                 sh 'docker push mhmdmaani/mobile:latest'
             }
