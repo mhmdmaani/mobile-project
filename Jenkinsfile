@@ -1,55 +1,53 @@
-pipeline {
-    environment {
-        registry = "osamahkh/mobilestore"
-        registryCredential = '0fb75e80-e0e7-4420-815a-38254637040a'
-        dockerImage = ''
-    }
+pipeline{
     agent any
-    tools {
+    tools{
         maven 'Maven'
     }
+    stages{
 
-    stages {
-        stage('Build') {
-            steps {
+        stage('pull from github'){
+            steps{
+                git 'https://github.com/mhmdmaani/mobile-project'
+            }
+
+        }
+        stage('Build'){
+            steps{
+                sh 'java -version'
                 sh 'mvn clean compile'
             }
         }
-        stage('Test') {
-            steps {
+        stage('Test'){
+            steps{
+                sh 'mvn verify'
                 sh 'mvn test'
             }
         }
 
-        stage('Package'){
+        stage('package'){
             steps{
                 sh 'mvn package'
             }
         }
-        stage('Dockerbuild') {
-            steps('build docker image') {
-                sh 'docker build -t latest .'
-                sh 'docker push mhmdmaani/mobile:latest'
-            }
+        stage('build docker image'){
+            steps{
+                sh 'docker build -t mhmdmaani/mobile:latest .'
         }
-        stage('Deploy our image') {
-            steps {
-                script {
-                     docker.withRegistry('https://registry-1.docker.io/v2/', registryCredential) {
-                        dockerImage.push("altest")
-                    }
+        stage('push to docker hub'){
+            steps{
+                withDockerRegistry([credentialsId: "docker-hub-credentials", url: "registry-1.docker.io"]) {
+                    bat "docker push mhmdmaani/mobile:latest"
                 }
             }
         }
-         stage('Cleaning up') { 
-
-            steps { 
-
-                sh "docker rmi $registry:$BUILD_NUMBER" 
+        post {
+            always {
+                echo 'sending email'
+                emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                        subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
 
             }
-        } 
-    }      
+        }
+    }
 }
-
-

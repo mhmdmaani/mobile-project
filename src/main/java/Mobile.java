@@ -1,14 +1,17 @@
 public class Mobile {
-
-    private String id;
+    private static int increament = 0;
+    private int id;
     private String mobileName;
-    private int mobileModel;
+    private String mobileModel;
     private double mobileYear;
     private double memory;
     private double price;
 
-    public Mobile (String id, String mobileName, int mobileModel, double mobileYear, double memory, double price) {
-        this.id = id;
+    public  Mobile(){
+
+    }
+    public Mobile (String mobileName, String mobileModel, double mobileYear, double memory, double price) {
+        this.id = ++increament;
         this.mobileName = mobileName;
         this.mobileModel = mobileModel;
         this.mobileYear = mobileYear;
@@ -16,11 +19,11 @@ public class Mobile {
         this.price = price;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getMobileName() {
@@ -32,11 +35,11 @@ public class Mobile {
     }
 
 
-    public int getMobileModel() {
+    public String getMobileModel() {
         return mobileModel;
     }
 
-    public void setMobileModel(int mobileModel) {
+    public void setMobileModel(String mobileModel) {
         this.mobileModel = mobileModel;
     }
 
