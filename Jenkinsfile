@@ -33,6 +33,7 @@ pipeline {
             steps {
                 sh 'docker build -t mhmdmaani/mobile:latest .'
             }
+        }
             stage('push to docker hub') {
                 steps {
                     withDockerRegistry([credentialsId: "docker-hub-credentials", url: "registry-1.docker.io"]) {
@@ -51,4 +52,3 @@ pipeline {
             }
         }
     }
-}
