@@ -32,7 +32,6 @@ pipeline{
         stage('build docker image'){
             steps{
                 sh 'docker build -t mhmdmaani/mobile:latest .'
-            }
         }
         stage('push to docker hub'){
             steps{
