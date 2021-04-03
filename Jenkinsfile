@@ -36,7 +36,7 @@ pipeline {
         stage('push to docker hub') {
             steps {
                 withDockerRegistry([credentialsId: "docker-hub-credentials"]) {
-                    bat "docker push mhmdmaani/mobile:latest"
+                    sh 'docker push mhmdmaani/mobile:latest'
                 }
             }
         }
