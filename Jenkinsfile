@@ -34,21 +34,20 @@ pipeline {
                 sh 'docker build -t mhmdmaani/mobile:latest .'
             }
         }
-            stage('push to docker hub') {
-                steps {
-                    withDockerRegistry([credentialsId: "docker-hub-credentials", url: "registry-1.docker.io"]) {
-                        bat "docker push mhmdmaani/mobile:latest"
-                    }
-                }
-            }
-            post {
-                always {
-                    echo 'sending email'
-                    emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-                            subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-
+        stage('push to docker hub') {
+            steps {
+                withDockerRegistry([credentialsId: "docker-hub-credentials", url: "registry-1.docker.io"]) {
+                    bat "docker push mhmdmaani/mobile:latest"
                 }
             }
         }
     }
+    post {
+       always {
+           echo 'sending email'
+           emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                            subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       }
+    }
+}
